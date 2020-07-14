@@ -20,7 +20,6 @@ public class App extends Application {
         defaultValue.put(UpdateHelper.KEY_UPDATE_ENABLE,"flase");
         defaultValue.put(UpdateHelper.KEY_UPDATE_VERSION,"1.0");
         defaultValue.put(UpdateHelper.KEY_UPDATE_URL,"your app url on App Store");
-        //Fucking Test
         remoteConfig.setDefaults(defaultValue);
         remoteConfig.fetch(5).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
