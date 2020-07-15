@@ -27,11 +27,13 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Toast.makeText(MainActivity.this, ""+urlApp,Toast.LENGTH_SHORT).show();
                     }
-                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    //do you want to that user can select to update
+               /* }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                    }
+                    }*/
+
                 }).create();
 
         alertDialog.show();

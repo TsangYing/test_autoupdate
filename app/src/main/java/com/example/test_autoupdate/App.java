@@ -17,7 +17,7 @@ public class App extends Application {
         final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
         Map<String,Object> defaultValue = new HashMap<>();
         defaultValue.put(UpdateHelper.KEY_UPDATE_ENABLE,"flase");
-        defaultValue.put(UpdateHelper.KEY_UPDATE_VERSION,"1.1");
+        defaultValue.put(UpdateHelper.KEY_UPDATE_VERSION,"1.0");
         defaultValue.put(UpdateHelper.KEY_UPDATE_URL,"your app url on App Store");
         remoteConfig.setDefaults(defaultValue);
         remoteConfig.fetch(5).addOnCompleteListener(new OnCompleteListener<Void>() {
