@@ -4,11 +4,21 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnUpdateCheckListener{
 
@@ -27,17 +37,17 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                 .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(MainActivity.this, "open:"+urlApp,Toast.LENGTH_SHORT).show();
-                        /*try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }*/
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(urlApp));
-                        startActivity(intent);
-                        System.exit(0);//關閉App
+                        //begin download
+                        DownloadManager mgr = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlApp))
+                                .setTitle("asd")
+                                .setDescription("downloading")
+                                .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI|DownloadManager.Request.NETWORK_WIFI)
+                                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "name-of-the-file.apk");
+                                ;
+                        mgr.enqueue(request);
+
                     }
 
                     }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -52,4 +62,5 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
         alertDialog.show();
 
     }
+
 }
