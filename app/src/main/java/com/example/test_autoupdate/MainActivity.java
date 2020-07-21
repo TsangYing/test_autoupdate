@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "name-of-the-file.apk");
                                 ;
                         mgr.enqueue(request);
+                        //begin running apk
+
 
                     }
 
