@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                                 .setDescription("downloading")
                                 .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI|DownloadManager.Request.NETWORK_WIFI)
                                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "name-of-the-file.apk");
-                                ;
+                                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "test.apk");
                         mgr.enqueue(request);
                         //begin running apk
 
