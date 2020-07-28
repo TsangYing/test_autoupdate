@@ -1,5 +1,6 @@
 package com.example.test_autoupdate;
 
+import androidx.activity.ComponentActivity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                         DownloadManager.Request request = new DownloadManager.Request(uri);
                         final long reference = downloadManager.enqueue(request);
                         request.setAllowedNetworkTypes(request.NETWORK_WIFI|request.NETWORK_MOBILE);
-                       //request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "Bugdroid.png"); //下載檔案加入到APP私有目錄下()
+                      // request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, "test.apk"); //下載檔案加入到APP私有目錄下()
                         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "test.apk");
                         downloadManager.enqueue(request);
 //                        DownloadManager.Query  query = new DownloadManager.Query();
