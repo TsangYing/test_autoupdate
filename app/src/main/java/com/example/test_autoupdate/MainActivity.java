@@ -19,6 +19,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnUpdateCheckListener{
 
@@ -41,23 +42,56 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                         DownloadManager mgr = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
                         String serviceString = Context.DOWNLOAD_SERVICE;
-                        DownloadManager downloadManager;
+                        final DownloadManager downloadManager;
                         downloadManager = (DownloadManager)getSystemService(serviceString);
                         Uri uri = Uri.parse(urlApp);
                         DownloadManager.Request request = new DownloadManager.Request(uri);
                         final long reference = downloadManager.enqueue(request);
                         request.setAllowedNetworkTypes(request.NETWORK_WIFI|request.NETWORK_MOBILE);
+                       //request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "Bugdroid.png"); //下載檔案加入到APP私有目錄下()
                         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "test.apk");
                         downloadManager.enqueue(request);
-                        //
+//                        DownloadManager.Query  query = new DownloadManager.Query();
+//                        query.setFilterById(reference);
+//                        Cursor myDownload = downloadManager.query(query);
+//                        int fileNameIdx=0;
+//                        int fileUriIdx=0;
+//                        int fileSizeIdx=0;
+//                        int bytesDLIdx = 0;
+//                        if (myDownload.moveToFirst()) {
+//                            fileNameIdx =
+//                                    myDownload.getColumnIndex(DownloadManager.COLUMN_LOCAL_FILENAME); //文件名
+//                            fileUriIdx =
+//                                    myDownload.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI); //文件uri
+//                            fileSizeIdx =
+//                                    myDownload.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);//文件大小
+//                            bytesDLIdx =
+//                                    myDownload.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);//文件下載大小
+//                        }
+//                        System.out.println("123456"+fileNameIdx);
+//                        System.out.println("123456"+fileSizeIdx);
+//                        System.out.println("123456"+fileUriIdx);
+//                        System.out.println("123456"+bytesDLIdx);
+//                        myDownload.close();
                         IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
                         BroadcastReceiver receiver = new BroadcastReceiver() {
                             @Override
                             public void onReceive(Context context, Intent intent) {
-                                String extraID = DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS;
-                                final long  myDownloadReference = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                                if (reference == myDownloadReference) {
-                                    System.out.println("123123"+reference);
+                                long myDownloadReference = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                                if (myDownloadReference == reference) {
+                                    Intent install = new Intent(Intent.ACTION_VIEW);
+                                    Uri downloadFileUri = downloadManager.getUriForDownloadedFile(reference);
+                                    if (downloadFileUri != null) {
+//                                        install.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
+//                                        install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                        getApplication().startActivity(install);
+                                        File apkFile = new File(Environment.getExternalStorageDirectory() + "/download/" + "test.apk");
+                                        install.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
+                                        startActivity(install);
+                                    }
+                                    else {
+                                        Log.e("DownloadManager", "download error");
+                                    }
                                 }
                             }
                         };
