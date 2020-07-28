@@ -81,19 +81,18 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                                 if (myDownloadReference == reference) {
                                     Intent install = new Intent(Intent.ACTION_VIEW);
                                     Uri downloadFileUri = downloadManager.getUriForDownloadedFile(reference);
+                                    System.out.println("123456789"+downloadFileUri);
                                     if (downloadFileUri != null) {
-//                                        install.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
-//                                        install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                        getApplication().startActivity(install);
-                                        File apkFile = new File(Environment.getExternalStorageDirectory() + "/download/" + "test.apk");
                                         install.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
-                                        startActivity(install);
+                                        install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        getApplication().startActivity(install);
                                     }
                                     else {
                                         Log.e("DownloadManager", "download error");
                                     }
                                 }
                             }
+
                         };
                         registerReceiver(receiver, filter);
                         //begin running apk
