@@ -39,13 +39,29 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //begin download
                         DownloadManager mgr = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlApp))
-                                .setTitle("asd")
-                                .setDescription("downloading")
-                                .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI|DownloadManager.Request.NETWORK_WIFI)
-                                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "test.apk");
-                        mgr.enqueue(request);
+
+                        String serviceString = Context.DOWNLOAD_SERVICE;
+                        DownloadManager downloadManager;
+                        downloadManager = (DownloadManager)getSystemService(serviceString);
+                        Uri uri = Uri.parse(urlApp);
+                        DownloadManager.Request request = new DownloadManager.Request(uri);
+                        final long reference = downloadManager.enqueue(request);
+                        request.setAllowedNetworkTypes(request.NETWORK_WIFI|request.NETWORK_MOBILE);
+                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "test.apk");
+                        downloadManager.enqueue(request);
+                        //
+                        IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+                        BroadcastReceiver receiver = new BroadcastReceiver() {
+                            @Override
+                            public void onReceive(Context context, Intent intent) {
+                                String extraID = DownloadManager.EXTRA_NOTIFICATION_CLICK_DOWNLOAD_IDS;
+                                final long  myDownloadReference = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                                if (reference == myDownloadReference) {
+                                    System.out.println("123123"+reference);
+                                }
+                            }
+                        };
+                        registerReceiver(receiver, filter);
                         //begin running apk
 
 
